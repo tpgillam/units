@@ -24,7 +24,6 @@ def main():
     print(numpy.add.reduce(xarrval))
     # print(numpy.add.reduce(xarr))
     print(xarr + yarr)
-    fsfsd
 
     n_samples = 10000
 

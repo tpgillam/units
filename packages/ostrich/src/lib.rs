@@ -97,9 +97,9 @@ impl ArrayQuantity {
         let numpy_is_scalar = py.import_bound("numpy")?.getattr("isscalar")?;
         let is_scalar = numpy_is_scalar.call1((&x_any,))?.extract::<bool>()?;
 
-        dbg!(&x_any);
-        dbg!(&x_any.get_type());
-        dbg!(&is_scalar);
+        // dbg!(&x_any);
+        // dbg!(&x_any.get_type());
+        // dbg!(&is_scalar);
 
         if is_scalar {
             // FIXME: what to do here? We could try to return a Quantity; which means we have a
@@ -107,7 +107,7 @@ impl ArrayQuantity {
             panic!("Oh scalar poo")
         } else {
             let value: Py<PyUntypedArray> = x_any.unbind().extract(py)?;
-            dbg!(&value);
+            // dbg!(&value);
             // NOTE: conceptually we just want to return a new `ArrayQuantity`, but since we're
             //  explicitly returning a `Bound<PyAny>` (rather than something that pyo3 will convert
             //  into a python object for us), we need to wrap it in a GIL-bound reference, and THEN
