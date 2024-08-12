@@ -10,3 +10,8 @@ crate-type = ["cdylib"]
 [dependencies]
 pyo3 = "0.21.2"
 numpy = "0.21"
+
+[profile.release]
+strip = "debuginfo"
+# lto = true
+# codegen-units = 1
