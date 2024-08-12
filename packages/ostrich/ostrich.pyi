@@ -14,7 +14,6 @@ class Quantity:
     def __repr__(self) -> str: ...
     def __mul__(self, other: Self) -> Self: ...
 
-
 class ArrayQuantity:
     """A wrapped array value with unit."""
 
@@ -25,3 +24,11 @@ class ArrayQuantity:
 
     def __str__(self) -> str: ...
     def __mul__(self, other: Self) -> Self: ...
+    def __array_ufunc__(
+        self,
+        ufunc,
+        method: str,
+        *inputs,
+        # out=None,  # FIXME: can we support `out`?
+        **kwargs,
+    ): ...

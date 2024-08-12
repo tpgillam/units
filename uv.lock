@@ -96,6 +96,9 @@ wheels = [
 name = "ostrich"
 version = "0.1.0"
 source = { editable = "packages/ostrich" }
+dependencies = [
+    { name = "numpy" },
+]
 
 [[package]]
 name = "packaging"

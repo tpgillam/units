@@ -21,6 +21,10 @@ def main():
     print(str(xarr))
     print(xarr * yarr)
 
+    print(numpy.add.reduce(xarrval))
+    print(numpy.add.reduce(xarr))
+    fsfsd
+
     n_samples = 10000
 
     t1 = timeit("x * y", globals={"x": x, "y": y}, number=n_samples)
