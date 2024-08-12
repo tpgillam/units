@@ -1,14 +1,20 @@
-[project]
-name = "units"
-version = "0.1.0"
-description = "Add your description here"
-readme = "README.md"
-requires-python = ">=3.12"
-dependencies = ["astropy>=6.1"]
-
-[tool.uv]
-dev-dependencies = ["ruff==0.5.7", "pyright==1.1.375"]
-
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"
+
+[project]
+name = "units"
+version = "0.1.0"
+description = "Messing around with units"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = ["astropy>=6.1", "numpy>=2", "pint>=0.24.3", "ostrich"]
+
+[tool.uv]
+dev-dependencies = ["ruff==0.5.7", "pyright==1.1.375", "pyinstrument>=4.7"]
+
+[tool.uv.sources]
+ostrich = { workspace = true }
+
+[tool.uv.workspace]
+members = ["packages/ostrich"]
