@@ -11,17 +11,15 @@ def main():
     # xval = numpy.asarray([42.0])
     # yval = numpy.asarray([10.0])
 
-    # n = 10
-    # xval = numpy.random.rand(n)
-    # yval = numpy.random.rand(n)
+    n = 100
+    xarrval = numpy.random.rand(n)
+    yarrval = numpy.random.rand(n)
 
-    # x = xval * astropy.units.meter
-    # y = yval * astropy.units.second
+    x = xval * astropy.units.meter
+    y = yval * astropy.units.second
 
-    x = astropy.units.meter
-    y = astropy.units.second
-
-    x / y
+    xarr = xarrval * astropy.units.meter
+    yarr = yarrval * astropy.units.second
 
     # with Profiler(0.0001) as p:
     #     for _ in range(10000):
@@ -29,8 +27,13 @@ def main():
     # # p.open_in_browser()
     # p.print()
 
-    t1 = timeit("x / y", globals={"x": x, "y": y}, number=1000)
-    t2 = timeit("x / y", globals={"x": xval, "y": yval}, number=1000)
+    n_samples = 1000
+    t1 = timeit("x / y", globals={"x": x, "y": y}, number=n_samples)
+    t2 = timeit("x / y", globals={"x": xval, "y": yval}, number=n_samples)
+    print(t1 / t2)
+
+    t1 = timeit("x / y", globals={"x": xarr, "y": yarr}, number=n_samples)
+    t2 = timeit("x / y", globals={"x": xarrval, "y": yarrval}, number=n_samples)
     print(t1 / t2)
 
 
