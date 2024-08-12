@@ -5,7 +5,7 @@ edition = "2021"
 
 [lib]
 name = "ostrich"
-create-type = ["cdylib"]
+crate-type = ["cdylib"]
 
 [dependencies]
 pyo3 = "0.21.2"
