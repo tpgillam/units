@@ -1,0 +1,11 @@
+[package]
+name = "ostrich"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+name = "ostrich"
+create-type = ["cdylib"]
+
+[dependencies]
+pyo3 = "0.21.1"
