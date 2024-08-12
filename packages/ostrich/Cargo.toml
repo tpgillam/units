@@ -8,5 +8,5 @@ name = "ostrich"
 create-type = ["cdylib"]
 
 [dependencies]
-pyo3 = "0.21.1"
+pyo3 = "0.21.2"
 numpy = "0.21"

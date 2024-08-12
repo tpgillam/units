@@ -7,9 +7,9 @@ def main():
     xval = 42.0
     yval = 10.0
 
-    n = 4
-    xarrval = numpy.random.rand(n)
-    yarrval = numpy.random.rand(n)
+    n = 5
+    xarrval = numpy.linspace(0, 1, n)
+    yarrval = numpy.linspace(0, 1, n)
 
     # x = xval * astropy.units.meter
     # y = yval * astropy.units.second
@@ -22,7 +22,8 @@ def main():
     print(xarr * yarr)
 
     print(numpy.add.reduce(xarrval))
-    print(numpy.add.reduce(xarr))
+    # print(numpy.add.reduce(xarr))
+    print(xarr + yarr)
     fsfsd
 
     n_samples = 10000

@@ -23,12 +23,15 @@ class ArrayQuantity:
         """The wrapped array."""
 
     def __str__(self) -> str: ...
-    def __mul__(self, other: Self) -> Self: ...
     def __array_ufunc__(
         self,
         ufunc,
         method: str,
         *inputs,
-        # out=None,  # FIXME: can we support `out`?
+        # out=None,  # FIXME: can/should we support `out`?
         **kwargs,
     ): ...
+
+    # XXX: There may well be other overloads here that we need to consider!
+    def __add__(self, other: Self) -> Self: ...
+    def __mul__(self, other: Self) -> Self: ...
