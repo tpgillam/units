@@ -11,10 +11,15 @@ requires-python = ">=3.12"
 dependencies = ["astropy>=6.1", "numpy>=2", "pint>=0.24.3", "ostrich"]
 
 [tool.uv]
-dev-dependencies = ["ruff==0.5.7", "pyright==1.1.375", "pyinstrument>=4.7"]
+dev-dependencies = [
+    "ruff==0.5.7",
+    "pyright==1.1.375",
+    "pyinstrument>=4.7",
+    "maturin>=1.7.0",
+]
 
 [tool.uv.sources]
-ostrich = { workspace = true }
+ostrich = { workspace = true, editable = true }
 
 [tool.uv.workspace]
 members = ["packages/ostrich"]
