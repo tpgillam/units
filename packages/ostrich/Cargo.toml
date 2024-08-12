@@ -9,3 +9,4 @@ create-type = ["cdylib"]
 
 [dependencies]
 pyo3 = "0.21.1"
+numpy = "0.21"

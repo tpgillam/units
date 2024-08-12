@@ -1,8 +1,7 @@
 from __future__ import annotations
+
 from dataclasses import dataclass
 from timeit import timeit
-
-from pyinstrument import Profiler
 
 
 @dataclass(frozen=True, slots=True)

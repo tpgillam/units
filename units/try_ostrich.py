@@ -1,7 +1,35 @@
-import ostrich
+from timeit import timeit
+import numpy
+from ostrich import ArrayQuantity, Quantity
+
 
 def main():
-    ostrich.guessing_game()
+    xval = 42.0
+    yval = 10.0
+
+    n = 4
+    xarrval = numpy.random.rand(n)
+    yarrval = numpy.random.rand(n)
+
+    # x = xval * astropy.units.meter
+    # y = yval * astropy.units.second
+
+    x = Quantity(xval)
+    y = Quantity(yval)
+    xarr = ArrayQuantity(xarrval)
+    yarr = ArrayQuantity(yarrval)
+    print(str(xarr))
+    print(xarr * yarr)
+
+    n_samples = 10000
+
+    t1 = timeit("x * y", globals={"x": x, "y": y}, number=n_samples)
+    t2 = timeit("x * y", globals={"x": xval, "y": yval}, number=n_samples)
+    print(t1 / t2)
+
+    t1 = timeit("x * y", globals={"x": xarr, "y": yarr}, number=n_samples)
+    t2 = timeit("x * y", globals={"x": xarrval, "y": yarrval}, number=n_samples)
+    print(t1 / t2)
 
 
 if __name__ == "__main__":

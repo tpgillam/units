@@ -5,6 +5,7 @@ build-backend = "maturin"
 [project]
 name = "ostrich"
 dynamic = ["version"]
+dependencies = ["numpy"]
 
 [tool.maturin]
 # "extension-module" tells pyo3 we want to build an extension module (skips linking against libpython.so)

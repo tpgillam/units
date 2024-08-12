@@ -1,37 +1,58 @@
+use numpy::PyUntypedArray;
 use pyo3::prelude::*;
-use std::cmp::Ordering;
-use std::io;
 
-#[pyfunction]
-fn guess_the_number() {
-    println!("Guess the number!");
+#[pyclass(module = "ostrich")]
+#[derive(Debug)]
+struct Quantity {
+    #[pyo3(get)]
+    value: f64,
+}
 
-    let secret_number = 41;
+#[pymethods]
+impl Quantity {
+    #[new]
+    fn new(value: f64) -> Self {
+        Quantity { value }
+    }
 
-    loop {
-        println!("Please input your guess.");
+    fn __str__(&self) -> PyResult<String> {
+        Ok(format!("Quantity({})", self.value))
+    }
 
-        let mut guess = String::new();
+    fn __repr__(&self) -> String {
+        format!("{:?}", self)
+    }
 
-        io::stdin()
-            .read_line(&mut guess)
-            .expect("Failed to read line");
-
-        let guess: u32 = match guess.trim().parse() {
-            Ok(num) => num,
-            Err(_) => continue,
-        };
-
-        println!("You guessed: {}", guess);
-
-        match guess.cmp(&secret_number) {
-            Ordering::Less => println!("Too small!"),
-            Ordering::Greater => println!("Too big!"),
-            Ordering::Equal => {
-                println!("You win!");
-                break;
-            }
+    fn __mul__(&self, other: &Self) -> Self {
+        Self {
+            value: self.value * other.value,
         }
+    }
+}
+
+#[pyclass(module = "ostrich")]
+struct ArrayQuantity {
+    #[pyo3(get)]
+    value: Py<PyUntypedArray>,
+}
+
+#[pymethods]
+impl ArrayQuantity {
+    #[new]
+    fn new(py: Python, value: Bound<PyUntypedArray>) -> ArrayQuantity {
+        let x = Py::clone_ref(&value.unbind(), py);
+        ArrayQuantity { value: x }
+    }
+
+    fn __str__(&self, py: Python) -> PyResult<String> {
+        let value_str = self.value.call_method0(py, "__str__")?;
+        Ok(format!("ArrayQuantity({})", value_str))
+    }
+
+    fn __mul__(&self, py: Python, other: &Self) -> PyResult<Self> {
+        let x_any = self.value.bind(py).mul(other.value.bind(py))?.unbind();
+        let value: Py<PyUntypedArray> = x_any.extract(py)?;
+        Ok(Self { value })
     }
 }
 
@@ -40,8 +61,8 @@ fn guess_the_number() {
 /// import the module.
 #[pymodule]
 fn ostrich(m: &Bound<'_, PyModule>) -> PyResult<()> {
-    m.add_function(wrap_pyfunction!(guess_the_number, m)?)?;
+    m.add_class::<Quantity>()?;
+    m.add_class::<ArrayQuantity>()?;
 
     Ok(())
 }
-
