@@ -12,7 +12,6 @@ def main():
     xarrval = numpy.linspace(0, 1, n)
     yarrval = numpy.linspace(0, 1, n)
 
-
     x = Quantity(xval)
     y = Quantity(yval)
     xarr = ArrayQuantity(xarrval)

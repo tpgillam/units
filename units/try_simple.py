@@ -3,10 +3,12 @@ from __future__ import annotations
 from dataclasses import dataclass
 from timeit import timeit
 
+import numpy
+
 
 @dataclass(frozen=True, slots=True)
 class Quantity:
-    value: float
+    value: float | numpy.ndarray
     # FIXME: add unit
 
     def __mul__(self, other) -> Quantity:
@@ -28,18 +30,14 @@ def main():
     xval = 42.0
     yval = 10.0
 
-    # xval = numpy.asarray([42.0])
-    # yval = numpy.asarray([10.0])
-
-    # n = 10
-    # xval = numpy.random.rand(n)
-    # yval = numpy.random.rand(n)
-
-    # x = xval * astropy.units.meter
-    # y = yval * astropy.units.second
+    n = 10
+    xarrval = numpy.random.rand(n)
+    yarrval = numpy.random.rand(n)
 
     x = Quantity(xval)
     y = Quantity(yval)
+    xarr = Quantity(xarrval)
+    yarr = Quantity(yarrval)
 
     # with Profiler(0.0001) as p:
     #     for _ in range(10000):
@@ -47,8 +45,13 @@ def main():
     # # p.open_in_browser()
     # p.print()
 
-    t1 = timeit("x / y", globals={"x": x, "y": y}, number=1000)
-    t2 = timeit("x / y", globals={"x": xval, "y": yval}, number=1000)
+    n_samples = 10000
+    t1 = timeit("x * y", globals={"x": x, "y": y}, number=n_samples)
+    t2 = timeit("x * y", globals={"x": xval, "y": yval}, number=n_samples)
+    print(t1 / t2)
+
+    t1 = timeit("x * y", globals={"x": xarr, "y": yarr}, number=n_samples)
+    t2 = timeit("x * y", globals={"x": xarrval, "y": yarrval}, number=n_samples)
     print(t1 / t2)
 
 
