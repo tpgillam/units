@@ -99,7 +99,11 @@ impl ArrayQuantity {
 
     fn __str__(&self, py: Python) -> PyResult<String> {
         let value_str = self.value.call_method0(py, "__str__")?;
-        Ok(format!("ArrayQuantity({}, {})", value_str, self.unit.unit_string()))
+        Ok(format!(
+            "ArrayQuantity({}, {})",
+            value_str,
+            self.unit.unit_string()
+        ))
     }
 
     // TODO: unclear which of the arguments should be refs? Does it matter?
