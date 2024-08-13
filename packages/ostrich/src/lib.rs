@@ -132,15 +132,22 @@ impl ArrayQuantity {
 
         umath.getattr("add")?.call1((slf, other))
     }
-    fn __mul__<'a>(slf: &Bound<'a, Self>, other: &Bound<'a, PyAny>) -> PyResult<Bound<'a, PyAny>> {
-        let py = other.py();
-        let umath = py
-            .import_bound("numpy")?
-            .getattr("_core")?
-            .getattr("umath")?;
-
-        umath.getattr("multiply")?.call1((slf, other))
+    // PERF: this version of __mul__ is WAY faster than the one below that goes via the unfunc.
+    //  My suspicion is that it's related to the numpy import.
+    fn __mul__(&self, py: Python, other: &Self) -> PyResult<Self> {
+        let bound_any = self.value.bind(py).mul(other.value.bind(py)).expect("Multiplying arrays should work");
+        let bound_array: Bound<PyUntypedArray> = bound_any.extract().expect("Result should be an array");
+        Ok(Self { value: bound_array.unbind() })
     }
+    // fn __mul__<'a>(slf: &Bound<'a, Self>, other: &Bound<'a, PyAny>) -> PyResult<Bound<'a, PyAny>> {
+    //     let py = other.py();
+    //     let umath = py
+    //         .import_bound("numpy")?
+    //         .getattr("_core")?
+    //         .getattr("umath")?;
+
+    //     umath.getattr("multiply")?.call1((slf, other))
+    // }
 }
 
 /// True iff __array_ufunc__ exists on obj and is set to None.
