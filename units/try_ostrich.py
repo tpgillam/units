@@ -1,6 +1,6 @@
 from timeit import timeit
 import numpy
-from ostrich import ArrayQuantity, Quantity
+from ostrich import ArrayQuantity, Quantity, Unit
 import gc
 
 
@@ -12,12 +12,15 @@ def main():
     xarrval = numpy.linspace(0, 1, n)
     yarrval = numpy.linspace(0, 1, n)
 
-    x = Quantity(xval)
-    y = Quantity(yval)
-    xarr = ArrayQuantity(xarrval)
-    yarr = ArrayQuantity(yarrval)
-    # print(str(xarr))
-    # print(xarr * yarr)
+    x = Quantity(xval, Unit.Meter)
+    y = Quantity(yval, Unit.Second)
+    print(x)
+    print(x * y)
+
+    xarr = ArrayQuantity(xarrval, Unit.Meter)
+    yarr = ArrayQuantity(yarrval, Unit.Second)
+    print(xarr)
+    print(xarr * yarr)
 
     # print(numpy.add.reduce(xarrval))
     # print(numpy.add.reduce(xarr))

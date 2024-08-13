@@ -3,23 +3,63 @@ use pyo3::{
     prelude::*,
     types::{PyDict, PyString, PyTuple},
 };
+use runtime_units::{
+    units::{LengthUnit, TimeUnit},
+    units_base::UnitDefinition,
+};
+
+// FIXME: can we avoid copy-pasting every single unit?
+#[pyclass(frozen, module = "ostrich")]
+enum Unit {
+    Meter,
+    Second,
+}
+
+impl Unit {
+    // TODO: should this be `into`? Some kind of conversion trait seems like the rust-like way to
+    // go here.
+    fn to_unit_definition(&self) -> UnitDefinition {
+        match self {
+            Self::Meter => LengthUnit::meter.into(),
+            Self::Second => TimeUnit::second.into(),
+        }
+    }
+
+    // TODO: hmm not clear what to do here
+    // fn from_unit_definition(unit_definition: &UnitDefinition) -> Self {
+    //     match unit_definition {
+    //         LengthUnit::meter => Self::Meter,
+    //         TimeUnit::second => Self::Second,
+    //     }
+    // }
+}
 
 #[pyclass(frozen, module = "ostrich")]
 #[derive(Debug)]
 struct Quantity {
     #[pyo3(get)]
     value: f64,
+    unit: UnitDefinition,
 }
+
+// TODO: how to define a getter to return us a unit?
 
 #[pymethods]
 impl Quantity {
     #[new]
-    fn new(value: f64) -> Self {
-        Quantity { value }
+    fn new(value: f64, unit: &Unit) -> Self {
+        Quantity {
+            value,
+            unit: unit.to_unit_definition(),
+        }
     }
 
     fn __str__(&self) -> PyResult<String> {
-        Ok(format!("Quantity({})", self.value))
+        Ok(format!(
+            "Quantity({}, {})",
+            self.value,
+            self.unit.unit_string()
+        ))
     }
 
     fn __repr__(&self) -> String {
@@ -29,6 +69,7 @@ impl Quantity {
     fn __mul__(&self, other: &Self) -> Self {
         Self {
             value: self.value * other.value,
+            unit: self.unit * other.unit,
         }
     }
 }
@@ -42,19 +83,23 @@ impl Quantity {
 struct ArrayQuantity {
     #[pyo3(get)]
     value: Py<PyUntypedArray>,
+    unit: UnitDefinition,
 }
 
 #[pymethods]
 impl ArrayQuantity {
     #[new]
-    fn new(py: Python, value: Bound<PyUntypedArray>) -> Self {
+    fn new(py: Python, value: Bound<PyUntypedArray>, unit: &Unit) -> Self {
         let x = Py::clone_ref(&value.unbind(), py);
-        ArrayQuantity { value: x }
+        ArrayQuantity {
+            value: x,
+            unit: unit.to_unit_definition(),
+        }
     }
 
     fn __str__(&self, py: Python) -> PyResult<String> {
         let value_str = self.value.call_method0(py, "__str__")?;
-        Ok(format!("ArrayQuantity({})", value_str))
+        Ok(format!("ArrayQuantity({}, {})", value_str, self.unit.unit_string()))
     }
 
     // TODO: unclear which of the arguments should be refs? Does it matter?
@@ -66,6 +111,8 @@ impl ArrayQuantity {
         inputs: &Bound<'a, PyTuple>,
         kwargs: Option<&Bound<'a, PyDict>>,
     ) -> PyResult<Bound<'a, PyAny>> {
+        // FIXME: figure out what to do with units based on the operation.
+
         // Access the GIL token stored on one of the arguments.
         let py = ufunc.py();
 
@@ -112,7 +159,16 @@ impl ArrayQuantity {
             //  explicitly returning a `Bound<PyAny>` (rather than something that pyo3 will convert
             //  into a python object for us), we need to wrap it in a GIL-bound reference, and THEN
             //  convert it to a `PyAny` reference explicitly.
-            Ok(Bound::new(py, ArrayQuantity { value })?.into_any())
+            // FIXME: unit is wrong!
+            // FIXME: unit is wrong!
+            Ok(Bound::new(
+                py,
+                ArrayQuantity {
+                    value,
+                    unit: self.unit,
+                },
+            )?
+            .into_any())
         }
     }
 
@@ -135,9 +191,17 @@ impl ArrayQuantity {
     // PERF: this version of __mul__ is WAY faster than the one below that goes via the unfunc.
     //  My suspicion is that it's related to the numpy import.
     fn __mul__(&self, py: Python, other: &Self) -> PyResult<Self> {
-        let bound_any = self.value.bind(py).mul(other.value.bind(py)).expect("Multiplying arrays should work");
-        let bound_array: Bound<PyUntypedArray> = bound_any.extract().expect("Result should be an array");
-        Ok(Self { value: bound_array.unbind() })
+        let bound_any = self
+            .value
+            .bind(py)
+            .mul(other.value.bind(py))
+            .expect("Multiplying arrays should work");
+        let bound_array: Bound<PyUntypedArray> =
+            bound_any.extract().expect("Result should be an array");
+        Ok(Self {
+            value: bound_array.unbind(),
+            unit: self.unit * other.unit,
+        })
     }
     // fn __mul__<'a>(slf: &Bound<'a, Self>, other: &Bound<'a, PyAny>) -> PyResult<Bound<'a, PyAny>> {
     //     let py = other.py();
@@ -206,6 +270,7 @@ fn _disables_array_ufunc(obj: &Bound<PyAny>) -> bool {
 /// import the module.
 #[pymodule]
 fn ostrich(m: &Bound<'_, PyModule>) -> PyResult<()> {
+    m.add_class::<Unit>()?;
     m.add_class::<Quantity>()?;
     m.add_class::<ArrayQuantity>()?;
 

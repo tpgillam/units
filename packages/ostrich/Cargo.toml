@@ -10,6 +10,7 @@ crate-type = ["cdylib"]
 [dependencies]
 pyo3 = "0.21.2"
 numpy = "0.21"
+runtime_units = "0.3.0"
 
 [profile.release]
 strip = "debuginfo"

@@ -9,6 +9,17 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "0c4b4d0bd25bd0b74681c0ad21497610ce1b7c91b1022cd21c80c6fbdd9476b0"
 
 [[package]]
+name = "bitfield-struct"
+version = "0.6.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "adc0846593a56638b74e136a45610f9934c052e14761bebca6b092d5522599e3"
+dependencies = [
+ "proc-macro2",
+ "quote",
+ "syn",
+]
+
+[[package]]
 name = "bitflags"
 version = "2.6.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -134,6 +145,7 @@ version = "0.1.0"
 dependencies = [
  "numpy",
  "pyo3",
+ "runtime_units",
 ]
 
 [[package]]
@@ -158,6 +170,12 @@ dependencies = [
  "smallvec",
  "windows-targets",
 ]
+
+[[package]]
+name = "paste"
+version = "1.0.15"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "57c0d7b74b563b49d38dae00a0c37d4d6de9b432382b2892f0574ddcae73fd0a"
 
 [[package]]
 name = "portable-atomic"
@@ -259,6 +277,16 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "2a908a6e00f1fdd0dfd9c0eb08ce85126f6d8bbda50017e74bc4a4b7d4a926a4"
 dependencies = [
  "bitflags",
+]
+
+[[package]]
+name = "runtime_units"
+version = "0.3.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "57ba3bc013852f422dbece407bddc9eb980141da6d79df426dae6e8aa54e5a93"
+dependencies = [
+ "bitfield-struct",
+ "paste",
 ]
 
 [[package]]
