@@ -1,6 +1,12 @@
 version = 1
 requires-python = ">=3.12"
 
+[manifest]
+members = [
+    "ostrich",
+    "units",
+]
+
 [[package]]
 name = "appdirs"
 version = "1.4.4"
@@ -108,6 +114,9 @@ source = { editable = "packages/ostrich" }
 dependencies = [
     { name = "numpy" },
 ]
+
+[package.metadata]
+requires-dist = [{ name = "numpy", specifier = ">=1.20" }]
 
 [[package]]
 name = "packaging"
@@ -280,6 +289,22 @@ dev = [
     { name = "pyinstrument" },
     { name = "pyright" },
     { name = "ruff" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "astropy", specifier = ">=6.1" },
+    { name = "numpy", specifier = ">=2" },
+    { name = "ostrich", editable = "packages/ostrich" },
+    { name = "pint", specifier = ">=0.24.3" },
+    { name = "unyt", specifier = ">=3" },
+]
+
+[package.metadata.requires-dev]
+dev = [
+    { name = "pyinstrument", specifier = ">=4.7" },
+    { name = "pyright", specifier = "==1.1.375" },
+    { name = "ruff", specifier = "==0.5.7" },
 ]
 
 [[package]]
