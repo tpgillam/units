@@ -1,12 +1,22 @@
 use numpy::PyUntypedArray;
 use pyo3::{
     prelude::*,
+    sync::GILOnceCell,
     types::{PyDict, PyString, PyTuple},
 };
 use runtime_units::{
     units::{LengthUnit, TimeUnit},
     units_base::UnitDefinition,
 };
+
+// Avoid re-doing imports.
+static NUMPY: GILOnceCell<Py<PyModule>> = GILOnceCell::new();
+
+fn numpy(py: Python) -> &Bound<PyModule> {
+    NUMPY
+        .get_or_init(py, || py.import("numpy").unwrap().unbind())
+        .bind(py)
+}
 
 // FIXME: can we avoid copy-pasting every single unit?
 #[pyclass(frozen, eq, module = "ostrich")]
@@ -145,8 +155,8 @@ impl ArrayQuantity {
 
         // Depending on the operation that we have performed, we might have a scalar at this point
         // (e.g. if calling `numpy.sum.reduce` on our array quantity).
-        // PERF: performing the import and attribute access every time seems like a bad idea.
-        let numpy_is_scalar = py.import("numpy")?.getattr("isscalar")?;
+        // PERF: performing attribute access every time seems like a bad idea.
+        let numpy_is_scalar = numpy(py).getattr("isscalar")?;
         let is_scalar = numpy_is_scalar.call1((&x_any,))?.extract::<bool>()?;
 
         // dbg!(&x_any);
@@ -186,7 +196,7 @@ impl ArrayQuantity {
         // TODO: can we efficently factor out importing the correct ufunc? Can't be great to call
         //  `import_bound` every time we need to get the module.
         let py = other.py();
-        let umath = py.import("numpy")?.getattr("_core")?.getattr("umath")?;
+        let umath = numpy(py).getattr("_core")?.getattr("umath")?;
 
         umath.getattr("add")?.call1((slf, other))
     }
@@ -207,8 +217,7 @@ impl ArrayQuantity {
     }
     // fn __mul__<'a>(slf: &Bound<'a, Self>, other: &Bound<'a, PyAny>) -> PyResult<Bound<'a, PyAny>> {
     //     let py = other.py();
-    //     let umath = py
-    //         .import_bound("numpy")?
+    //     let umath = numpy(py)
     //         .getattr("_core")?
     //         .getattr("umath")?;
 
