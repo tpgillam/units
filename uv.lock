@@ -7,6 +7,12 @@ members = [
     "units",
 ]
 
+[manifest]
+members = [
+    "ostrich",
+    "units",
+]
+
 [[package]]
 name = "appdirs"
 version = "1.4.4"

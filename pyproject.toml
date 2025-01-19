@@ -7,6 +7,7 @@ name = "units"
 version = "0.1.0"
 description = "Messing around with units"
 readme = "README.md"
+license = { file = "LICENSE" }
 requires-python = ">=3.12"
 dependencies = [
     "astropy>=6.1",
