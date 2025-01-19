@@ -1,5 +1,11 @@
 version = 1
-requires-python = ">=3.12"
+requires-python = "==3.12.*"
+
+[manifest]
+members = [
+    "ostrich",
+    "units",
+]
 
 [[package]]
 name = "appdirs"
@@ -103,11 +109,13 @@ wheels = [
 
 [[package]]
 name = "ostrich"
-version = "0.1.0"
 source = { editable = "packages/ostrich" }
 dependencies = [
     { name = "numpy" },
 ]
+
+[package.metadata]
+requires-dist = [{ name = "numpy", specifier = ">=1.20" }]
 
 [[package]]
 name = "packaging"
@@ -167,16 +175,6 @@ wheels = [
     { url = "https://files.pythonhosted.org/packages/50/7c/b29a6cf7981d4d83ef37bee554137684197280bd3597e28ce89923622468/pyinstrument-4.7.2-cp312-cp312-musllinux_1_2_x86_64.whl", hash = "sha256:0f43db19d1bb923b8b4b50f1d95994151cb04e848acd4740238e3805e87825c3", size = 125689 },
     { url = "https://files.pythonhosted.org/packages/0e/5c/d9b140c8c33f1a06857b3c619aa1758aef070334e66bf51636f28a0c2565/pyinstrument-4.7.2-cp312-cp312-win32.whl", hash = "sha256:ef63b4157bf245a2b9543fa71cec71116a4e19c2a6a6ad96623d7b85eaa32119", size = 103882 },
     { url = "https://files.pythonhosted.org/packages/c4/06/c023581cd5c6dfdd2208578a243b1faa14c8c225fe5f2f1ffaa13b0c3820/pyinstrument-4.7.2-cp312-cp312-win_amd64.whl", hash = "sha256:140203d90e89a06dad86b07cb8d9ab1d763ddc1332502839daac19ff6360ae84", size = 104627 },
-    { url = "https://files.pythonhosted.org/packages/8f/81/8d24d68bedf7c1be05adf10233debf687c6a06804e2caf88ec1edbcb6cab/pyinstrument-4.7.2-cp313-cp313-macosx_10_13_universal2.whl", hash = "sha256:2df465b065435152473b7c4d0b80c05d3136769251fd7fe725cfcb6eb87340fa", size = 110042 },
-    { url = "https://files.pythonhosted.org/packages/de/aa/e61c24450de8ff34e5e6d4871d330ae68a8dc01bbb978902e5194c8ecd78/pyinstrument-4.7.2-cp313-cp313-macosx_10_13_x86_64.whl", hash = "sha256:50023b396289a27ea5d2f60d78bdeec7e4ccc6051038dfd7f5638c15a314a5d5", size = 102082 },
-    { url = "https://files.pythonhosted.org/packages/73/80/91c083c627f5e7c37bd02589e31c75001226c3cc7415cd8596f2956cff12/pyinstrument-4.7.2-cp313-cp313-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:065451fed990ad050b0fdb4a2bd5f28426f5c5f4b94bd8dab9d144079e073761", size = 125932 },
-    { url = "https://files.pythonhosted.org/packages/c9/2a/032d35717a5194bd624cf7411fa365d0815a237b0914706b02c53980f12f/pyinstrument-4.7.2-cp313-cp313-manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:017788c61627f74c3ea503198628bccc46a87e421a282dfb055ff4500026748f", size = 124626 },
-    { url = "https://files.pythonhosted.org/packages/35/de/e12e0c5328545411d3295c350d80f67446b16166688b385eb1e3326f7e2a/pyinstrument-4.7.2-cp313-cp313-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:d8df61a879c7316f31791018c92f8cca92cd4dc5a624e629c3d969d77a3657fb", size = 126027 },
-    { url = "https://files.pythonhosted.org/packages/dd/4a/707a278b6c62fbab07283067696495a8277579295a198063754a2b8f8ffd/pyinstrument-4.7.2-cp313-cp313-musllinux_1_2_aarch64.whl", hash = "sha256:656910a5fbb7b99232f8f835815cdf69734b229434c26380c29a0ef09ec9874d", size = 125711 },
-    { url = "https://files.pythonhosted.org/packages/7b/66/c07b50ff966a83dfb4b5bec5a98b2ee0d2a5dda4079dd4edaf62d28cf6ff/pyinstrument-4.7.2-cp313-cp313-musllinux_1_2_i686.whl", hash = "sha256:c2337616952ec3bd35dedb9a1ed396a3accfc0305bc54e22179e77fe63d50909", size = 125341 },
-    { url = "https://files.pythonhosted.org/packages/e1/84/25b7d9387f9fb585271b06acda46647ff26608ea4aa147dcd8e8d97d35c4/pyinstrument-4.7.2-cp313-cp313-musllinux_1_2_x86_64.whl", hash = "sha256:ea4e4e7a8ea9a042fa2c4e0efc00d87b29e0af4a1a0b3dba907c3c63cdde4510", size = 125853 },
-    { url = "https://files.pythonhosted.org/packages/79/33/c3fd130dd7fa4fe0372b2d2f997c6d8101b0cac63c6170a1967028a6d6eb/pyinstrument-4.7.2-cp313-cp313-win32.whl", hash = "sha256:24012bc0e5a507189f5f1caa01b4589bb286348e929df6a898c926ffd6e5238a", size = 103883 },
-    { url = "https://files.pythonhosted.org/packages/a7/dd/fd45c67ed42cbd3eb56a8713f3c8e5ce49cd15155fc81007cd3fd1fe18b9/pyinstrument-4.7.2-cp313-cp313-win_amd64.whl", hash = "sha256:3d8eaf57bc447b8e108b5d684b371c64232d9895b06a097d8dc2b92f3fdde561", size = 104636 },
 ]
 
 [[package]]
@@ -206,15 +204,6 @@ wheels = [
     { url = "https://files.pythonhosted.org/packages/c9/1f/4f998c900485e5c0ef43838363ba4a9723ac0ad73a9dc42068b12aaba4e4/PyYAML-6.0.2-cp312-cp312-musllinux_1_1_x86_64.whl", hash = "sha256:8b9c7197f7cb2738065c481a0461e50ad02f18c78cd75775628afb4d7137fb3b", size = 756611 },
     { url = "https://files.pythonhosted.org/packages/df/d1/f5a275fdb252768b7a11ec63585bc38d0e87c9e05668a139fea92b80634c/PyYAML-6.0.2-cp312-cp312-win32.whl", hash = "sha256:ef6107725bd54b262d6dedcc2af448a266975032bc85ef0172c5f059da6325b4", size = 140591 },
     { url = "https://files.pythonhosted.org/packages/0c/e8/4f648c598b17c3d06e8753d7d13d57542b30d56e6c2dedf9c331ae56312e/PyYAML-6.0.2-cp312-cp312-win_amd64.whl", hash = "sha256:7e7401d0de89a9a855c839bc697c079a4af81cf878373abd7dc625847d25cbd8", size = 156338 },
-    { url = "https://files.pythonhosted.org/packages/ef/e3/3af305b830494fa85d95f6d95ef7fa73f2ee1cc8ef5b495c7c3269fb835f/PyYAML-6.0.2-cp313-cp313-macosx_10_13_x86_64.whl", hash = "sha256:efdca5630322a10774e8e98e1af481aad470dd62c3170801852d752aa7a783ba", size = 181309 },
-    { url = "https://files.pythonhosted.org/packages/45/9f/3b1c20a0b7a3200524eb0076cc027a970d320bd3a6592873c85c92a08731/PyYAML-6.0.2-cp313-cp313-macosx_11_0_arm64.whl", hash = "sha256:50187695423ffe49e2deacb8cd10510bc361faac997de9efef88badc3bb9e2d1", size = 171679 },
-    { url = "https://files.pythonhosted.org/packages/7c/9a/337322f27005c33bcb656c655fa78325b730324c78620e8328ae28b64d0c/PyYAML-6.0.2-cp313-cp313-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:0ffe8360bab4910ef1b9e87fb812d8bc0a308b0d0eef8c8f44e0254ab3b07133", size = 733428 },
-    { url = "https://files.pythonhosted.org/packages/a3/69/864fbe19e6c18ea3cc196cbe5d392175b4cf3d5d0ac1403ec3f2d237ebb5/PyYAML-6.0.2-cp313-cp313-manylinux_2_17_s390x.manylinux2014_s390x.whl", hash = "sha256:17e311b6c678207928d649faa7cb0d7b4c26a0ba73d41e99c4fff6b6c3276484", size = 763361 },
-    { url = "https://files.pythonhosted.org/packages/04/24/b7721e4845c2f162d26f50521b825fb061bc0a5afcf9a386840f23ea19fa/PyYAML-6.0.2-cp313-cp313-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:70b189594dbe54f75ab3a1acec5f1e3faa7e8cf2f1e08d9b561cb41b845f69d5", size = 759523 },
-    { url = "https://files.pythonhosted.org/packages/2b/b2/e3234f59ba06559c6ff63c4e10baea10e5e7df868092bf9ab40e5b9c56b6/PyYAML-6.0.2-cp313-cp313-musllinux_1_1_aarch64.whl", hash = "sha256:41e4e3953a79407c794916fa277a82531dd93aad34e29c2a514c2c0c5fe971cc", size = 726660 },
-    { url = "https://files.pythonhosted.org/packages/fe/0f/25911a9f080464c59fab9027482f822b86bf0608957a5fcc6eaac85aa515/PyYAML-6.0.2-cp313-cp313-musllinux_1_1_x86_64.whl", hash = "sha256:68ccc6023a3400877818152ad9a1033e3db8625d899c72eacb5a668902e4d652", size = 751597 },
-    { url = "https://files.pythonhosted.org/packages/14/0d/e2c3b43bbce3cf6bd97c840b46088a3031085179e596d4929729d8d68270/PyYAML-6.0.2-cp313-cp313-win32.whl", hash = "sha256:bc2fa7c6b47d6bc618dd7fb02ef6fdedb1090ec036abab80d4681424b84c1183", size = 140527 },
-    { url = "https://files.pythonhosted.org/packages/fa/de/02b54f42487e3d3c6efb3f89428677074ca7bf43aae402517bc7cca949f3/PyYAML-6.0.2-cp313-cp313-win_amd64.whl", hash = "sha256:8388ee1976c416731879ac16da0aff3f63b286ffdd57cdeb95f3f2e085687563", size = 156446 },
 ]
 
 [[package]]
@@ -280,6 +269,22 @@ dev = [
     { name = "pyinstrument" },
     { name = "pyright" },
     { name = "ruff" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "astropy", specifier = ">=6.1" },
+    { name = "numpy", specifier = ">=2" },
+    { name = "ostrich", editable = "packages/ostrich" },
+    { name = "pint", specifier = ">=0.24.3" },
+    { name = "unyt", specifier = ">=3" },
+]
+
+[package.metadata.requires-dev]
+dev = [
+    { name = "pyinstrument", specifier = ">=4.7" },
+    { name = "pyright", specifier = "==1.1.375" },
+    { name = "ruff", specifier = "==0.5.7" },
 ]
 
 [[package]]
