@@ -9,7 +9,8 @@ use runtime_units::{
 };
 
 // FIXME: can we avoid copy-pasting every single unit?
-#[pyclass(frozen, module = "ostrich")]
+#[pyclass(frozen, eq, module = "ostrich")]
+#[derive(PartialEq)]
 enum Unit {
     Meter,
     Second,
@@ -138,14 +139,14 @@ impl ArrayQuantity {
             })
             .collect::<Vec<_>>();
 
-        let unwrapped_inputs = PyTuple::new_bound(py, unwrapped_inputs_vec.iter());
+        let unwrapped_inputs = PyTuple::new(py, unwrapped_inputs_vec.iter())?;
         // dbg!(&unwrapped_inputs);
         let x_any = attr.call(unwrapped_inputs, kwargs)?;
 
         // Depending on the operation that we have performed, we might have a scalar at this point
         // (e.g. if calling `numpy.sum.reduce` on our array quantity).
         // PERF: performing the import and attribute access every time seems like a bad idea.
-        let numpy_is_scalar = py.import_bound("numpy")?.getattr("isscalar")?;
+        let numpy_is_scalar = py.import("numpy")?.getattr("isscalar")?;
         let is_scalar = numpy_is_scalar.call1((&x_any,))?.extract::<bool>()?;
 
         // dbg!(&x_any);
@@ -185,10 +186,7 @@ impl ArrayQuantity {
         // TODO: can we efficently factor out importing the correct ufunc? Can't be great to call
         //  `import_bound` every time we need to get the module.
         let py = other.py();
-        let umath = py
-            .import_bound("numpy")?
-            .getattr("_core")?
-            .getattr("umath")?;
+        let umath = py.import("numpy")?.getattr("_core")?.getattr("umath")?;
 
         umath.getattr("add")?.call1((slf, other))
     }
